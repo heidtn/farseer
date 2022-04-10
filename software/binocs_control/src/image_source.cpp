@@ -7,7 +7,7 @@ USBStereoSource::USBStereoSource(const std::string &dev_name) {
     }
 }
 
-image_collection_t USBStereoSource::GetImages() {
+image_collection_t USBStereoSource::getImages() {
     cap.read(raw_image);
     int width = raw_image.cols; 
     int height = raw_image.rows;

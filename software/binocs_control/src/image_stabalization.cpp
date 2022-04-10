@@ -59,7 +59,13 @@ image_collection_t ImageStabalization::stabalizeImages(image_collection_t collec
         cur_transform.setTransform(T);
     }
 
-    TransformParam smoothed_transform = cur_transform * alpha*-1.0 + last_transform * (1.0 - alpha)*-1.0;
+    TransformParam zero_transform;
+    summed_transform += cur_transform;
+
+    TransformParam smoothed_transform;
+    summed_transform = summed_transform*alpha + zero_transform*(1.0-alpha);
+    smoothed_transform = summed_transform*-1.0;
+
     cv::Mat smoothed_matrix(cv::Size(3, 2), CV_64F);
     smoothed_transform.getTransform(smoothed_matrix);
 

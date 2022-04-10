@@ -56,6 +56,12 @@ struct TransformParam {
     TransformParam operator*(const double b) const {
         return TransformParam(dx * b, dy * b, da * b);
     }
+
+    void operator+=(const TransformParam b) {
+        dx += b.dx;
+        dy += b.dy;
+        da += b.da;
+    }
 };
 
 class ImageStabalization {
@@ -65,8 +71,9 @@ class ImageStabalization {
   private:
     image_collection_t last_images;
     TransformParam last_transform;
+    TransformParam summed_transform;
     // the smoothing parameter for subsequent positions
-    double alpha = 0.7;
+    double alpha = 0.9;
 };
 
 #endif
