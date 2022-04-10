@@ -4,6 +4,6 @@ find_package( OpenCV REQUIRED )
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 include_directories( include )
 
-add_executable(binoc_control  src/binoc_control.cpp src/image_source.cpp)
+add_executable(binoc_control  src/binoc_control.cpp src/image_source.cpp src/image_stabalization.cpp)
 target_link_libraries( binoc_control ${OpenCV_LIBS} )
 
