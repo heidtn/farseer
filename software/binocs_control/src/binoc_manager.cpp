@@ -4,14 +4,25 @@
 #include "image_stabalization.h"
 
 BinocManager::BinocManager() {
-    display = std::make_unique<SimpleStereoViewer>(); 
-    source = std::make_unique<USBStereoSource>("/dev/video4"); 
     stabalizer = std::make_unique<ImageStabalization>(); 
+}
+
+void BinocManager::setupGenericStereo(int interpupil, int width, int height) {
+    display = std::make_unique<SimpleStereoViewer>(interpupil, width, height); 
+}
+
+void BinocManager::setupDesktopDisplay() {
+    display = std::make_unique<MonitorDisplay>(); 
+}
+
+void BinocManager::setupSimpleUSB(std::string &dev_name) {
+    source = std::make_unique<USBStereoSource>(dev_name); 
 }
 
 void BinocManager::run() {
     while(true) {
         image_collection_t res = source->getImages();
+        if(res.left_im.data == NULL) continue;
         image_collection_t stabalized = stabalizer->stabalizeImages(res);
         display->displayImages(stabalized);
     }

@@ -9,12 +9,12 @@ void MonitorDisplay::displayImages(image_collection_t collection) {
     cv::waitKey(1);
 }
 
-SimpleStereoViewer::SimpleStereoViewer() {
+SimpleStereoViewer::SimpleStereoViewer(int _interpupilary_distance, int _eye_width, int _eye_height) {
     cv::namedWindow("View", cv::WND_PROP_FULLSCREEN);
     cv::setWindowProperty("View", cv::WND_PROP_FULLSCREEN, cv::WINDOW_FULLSCREEN);
-
-    //width = cv::getWindowImageRect("View").width;
-    //height = cv::getWindowImageRect("View").height;
+    eye_width = _eye_width;
+    eye_height = _eye_height;
+    interpupilary_distance = _interpupilary_distance;
 
     Display* disp = XOpenDisplay(0);
     Screen*  scrn = DefaultScreenOfDisplay(disp);
@@ -22,21 +22,21 @@ SimpleStereoViewer::SimpleStereoViewer() {
     height = scrn->height;
 
     view_buffer.create(height, width, CV_8UC3);
-    //view_buffer = cv::Mat::zeros(width, height, CV_8UC3);
-
-    interpupilary_distance = width / 8;
 }
 
 void SimpleStereoViewer::displayImages(image_collection_t collection) {
-    int row_start = (height / 2) - (collection.left_im.rows / 2);
-    int left_col_start = (width / 2) - (collection.left_im.cols / 2) - (interpupilary_distance / 2);
+    cv::Mat resized_left;
+    cv::Mat resized_right;
+
+    cv::resize(collection.left_im, resized_left, cv::Size(eye_width, eye_height));
+    cv::resize(collection.right_im, resized_right, cv::Size(eye_width, eye_height));
+
+    int row_start = (height / 2) - (resized_left.rows / 2);
+    int left_col_start = (width / 2) - (resized_left.cols / 2) - (interpupilary_distance / 2);
     int right_col_start = left_col_start + interpupilary_distance;
 
-    collection.left_im.copyTo(view_buffer(cv::Rect(left_col_start, row_start, collection.left_im.cols, collection.left_im.rows)));
-    collection.right_im.copyTo(view_buffer(cv::Rect(right_col_start, row_start, collection.right_im.cols, collection.right_im.rows)));
-
-    
-    std::cout << cv::getWindowImageRect("View") << std::endl;
+    resized_left.copyTo(view_buffer(cv::Rect(left_col_start, row_start, resized_left.cols, resized_left.rows)));
+    resized_right.copyTo(view_buffer(cv::Rect(right_col_start, row_start, resized_right.cols, resized_right.rows)));
 
     cv::imshow("View", view_buffer);
     cv::waitKey(1);

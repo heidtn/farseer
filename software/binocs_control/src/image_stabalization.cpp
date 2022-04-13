@@ -26,6 +26,10 @@ image_collection_t ImageStabalization::stabalizeImages(image_collection_t collec
     std::vector<cv::Point2f> cur_pts, prev_pts;
     cv::goodFeaturesToTrack(last_images.left_im, prev_pts, 200, 0.01, 30);
 
+    if(cur_pts.empty()) {
+        return processed_images;
+    }
+
     std::vector<uchar> status;
     std::vector<float> err;
     cv::calcOpticalFlowPyrLK(last_images.left_im, left_gray, prev_pts, cur_pts, status, err);

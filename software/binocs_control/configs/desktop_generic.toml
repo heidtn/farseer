@@ -1,0 +1,9 @@
+[ImageSource]
+type = "SingleUSB"
+source = "/dev/video4"
+
+[DisplayDevice]
+type="SimpleStereoViewer"
+interpupil=400
+image_width=340
+image_height=240 

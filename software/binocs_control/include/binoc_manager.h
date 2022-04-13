@@ -9,6 +9,9 @@ class BinocManager {
 public:
     BinocManager();
     void run();
+    void setupDesktopDisplay();
+    void setupGenericStereo(int interpupil, int width, int height);
+    void setupSimpleUSB(std::string &dev_name);
 
   private:
     std::unique_ptr<iDisplayDevice> display;
