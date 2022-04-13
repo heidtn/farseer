@@ -14,4 +14,16 @@ class MonitorDisplay : public iDisplayDevice {
     void displayImages(image_collection_t collection);
 };
 
+class SimpleStereoViewer : public iDisplayDevice {
+  public:
+    SimpleStereoViewer();
+    void displayImages(image_collection_t collection);
+  
+  private:
+    int width;
+    int height;
+    int interpupilary_distance;
+    cv::Mat view_buffer;
+};
+
 #endif

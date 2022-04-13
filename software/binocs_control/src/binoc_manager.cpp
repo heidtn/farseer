@@ -4,7 +4,7 @@
 #include "image_stabalization.h"
 
 BinocManager::BinocManager() {
-    display = std::make_unique<MonitorDisplay>(); 
+    display = std::make_unique<SimpleStereoViewer>(); 
     source = std::make_unique<USBStereoSource>("/dev/video4"); 
     stabalizer = std::make_unique<ImageStabalization>(); 
 }
