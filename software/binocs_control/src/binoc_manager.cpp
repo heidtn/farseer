@@ -19,6 +19,14 @@ void BinocManager::setupSimpleUSB(std::string &dev_name) {
     source = std::make_unique<USBStereoSource>(dev_name); 
 }
 
+void BinocManager::setupMonocularUSB(std::string &dev_name) {
+    source = std::make_unique<USBMonocularSource>(dev_name);
+}
+
+void BinocManager::setupDualCameras(std::string &left_cam_name, std::string right_cam_name) {
+    source = std::make_unique<DualCameraSource>(left_cam_name, right_cam_name);
+}
+
 void BinocManager::run() {
     while(true) {
         image_collection_t res = source->getImages();

@@ -12,6 +12,8 @@ public:
     void setupDesktopDisplay();
     void setupGenericStereo(int interpupil, int width, int height);
     void setupSimpleUSB(std::string &dev_name);
+    void setupMonocularUSB(std::string &dev_name);
+    void setupDualCameras(std::string &left_cam_name, std::string right_cam_name);
 
   private:
     std::unique_ptr<iDisplayDevice> display;

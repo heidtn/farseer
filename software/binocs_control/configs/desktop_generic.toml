@@ -1,6 +1,6 @@
 [ImageSource]
-type = "SingleUSB"
-source = "/dev/video4"
+type = "MonocularUSB"
+source = "/dev/video0"
 
 [DisplayDevice]
 type="SimpleStereoViewer"

@@ -11,6 +11,13 @@ void configureSource(BinocManager &manager, toml::table &tbl) {
     if(*source_type == "SingleUSB") {
         std::optional<std::string> dev_name = tbl["ImageSource"]["source"].value<std::string>();
         manager.setupSimpleUSB(*dev_name);
+    } else if(*source_type == "MonocularUSB") {
+        std::optional<std::string> dev_name = tbl["ImageSource"]["source"].value<std::string>();
+        manager.setupMonocularUSB(*dev_name);
+    } else if(*source_type == "DualCamera") {
+        std::optional<std::string> left_cam = tbl["ImageSource"]["left_cam"].value<std::string>();
+        std::optional<std::string> right_cam = tbl["ImageSource"]["right_cam"].value<std::string>();
+        manager.setupDualCameras(*left_cam, *right_cam);
     } else {
         throw std::runtime_error("Invalid source type!");
     }

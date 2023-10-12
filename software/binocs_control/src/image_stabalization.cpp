@@ -26,7 +26,8 @@ image_collection_t ImageStabalization::stabalizeImages(image_collection_t collec
     std::vector<cv::Point2f> cur_pts, prev_pts;
     cv::goodFeaturesToTrack(last_images.left_im, prev_pts, 200, 0.01, 30);
 
-    if(cur_pts.empty()) {
+    if(prev_pts.empty()) {
+        std::cout << "got now features for tracking" << std::endl;
         return processed_images;
     }
 
@@ -58,6 +59,7 @@ image_collection_t ImageStabalization::stabalizeImages(image_collection_t collec
     TransformParam cur_transform;
     if (T.data == NULL) {
         cv::Mat empty(cv::Size(3, 2), CV_64F);
+        std::cout << "No trasnform found!" << std::endl;
         cur_transform.setTransform(empty);
     } else {
         cur_transform.setTransform(T);
@@ -69,6 +71,11 @@ image_collection_t ImageStabalization::stabalizeImages(image_collection_t collec
     TransformParam smoothed_transform;
     summed_transform = summed_transform*alpha + zero_transform*(1.0-alpha);
     smoothed_transform = summed_transform*-1.0;
+
+    if(smoothed_transform.length_2d() > collection.left_im.rows/2) {
+        smoothed_transform.normalize();
+        smoothed_transform = smoothed_transform*(collection.left_im.rows/2.0);
+    }
 
     cv::Mat smoothed_matrix(cv::Size(3, 2), CV_64F);
     smoothed_transform.getTransform(smoothed_matrix);

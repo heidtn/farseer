@@ -43,4 +43,32 @@ class USBStereoSource : public iImageSource {
     cv::Mat right_im;
 };
 
+class USBMonocularSource : public iImageSource {
+  public:
+
+  USBMonocularSource(const std::string &dev_name);
+
+  image_collection_t getImages();
+
+  private:
+    cv::VideoCapture cap;
+    cv::Mat raw_image;
+    cv::Mat left_im;
+    cv::Mat right_im;
+};
+
+class DualCameraSource : public iImageSource {
+  public:
+
+  DualCameraSource(const std::string &left_cam_name, const std::string &right_cam_name);
+
+  image_collection_t getImages();
+
+  private:
+    cv::VideoCapture cap_left;
+    cv::VideoCapture cap_right;
+    cv::Mat left_im;
+    cv::Mat right_im;
+};
+
 #endif

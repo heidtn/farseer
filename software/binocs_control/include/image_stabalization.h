@@ -57,6 +57,16 @@ struct TransformParam {
         return TransformParam(dx * b, dy * b, da * b);
     }
 
+    float length_2d() {
+        return sqrt(dx*dx + dy*dy);
+    }
+
+    void normalize() {
+        float length = length_2d();
+        dx /= length;
+        dy /= length;
+    }
+
     void operator+=(const TransformParam b) {
         dx += b.dx;
         dy += b.dy;
@@ -73,7 +83,7 @@ class ImageStabalization {
     TransformParam last_transform;
     TransformParam summed_transform;
     // the smoothing parameter for subsequent positions
-    double alpha = 0.9;
+    double alpha = 0.5;
 };
 
 #endif
